@@ -1,4 +1,4 @@
-# PlacemarkFilterService
+# KmlFilterAPI
 
 **KmlFilterAPI** é uma Web API desenvolvida em .NET para filtrar, listar e exportar dados de arquivos KML. A API permite que usuários apliquem diferentes critérios de filtragem sobre elementos do tipo `Placemark` e fornece resultados em formatos JSON ou em um novo arquivo KML gerado.
 
