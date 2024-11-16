@@ -13,7 +13,6 @@ namespace PlacemarkFilter.Infrastructure.Persistence.Repositories
             var xmlDoc = new XmlDocument();
             xmlDoc.Load(filePath);
 
-            // Obtém todos os nós "Placemark" no KML
             var placemarkNodes = xmlDoc.GetElementsByTagName("Placemark");
             foreach (XmlNode node in placemarkNodes)
             {
@@ -21,7 +20,7 @@ namespace PlacemarkFilter.Infrastructure.Persistence.Repositories
                 {
                     Cliente = node["name"]?.InnerText,
                     Situacao = node["description"]?.InnerText,
-                    Bairro = node["address"]?.InnerText // Adicione outros campos conforme necessário
+                    Bairro = node["address"]?.InnerText 
                 };
                 placemarks.Add(placemark);
             }
