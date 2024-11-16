@@ -3,17 +3,53 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{739EDF4D-10F7-47D2-8454-621444558FB1}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5AC76D52-865B-4741-AF21-DCE0780C83CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{7C814AF3-10AC-4187-A213-D673079F4EAE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{4EA09DE0-47B8-466F-B7EC-55B293A993C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlacemarkFilter.Domain", "PlacemarkFilter.Domain\PlacemarkFilter.Domain.csproj", "{877B4C14-31EC-4DAE-99EA-312F755B4D5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlacemarkFilter.Application", "PlacemarkFilter.Application\PlacemarkFilter.Application.csproj", "{87BEF7FC-8E60-4AA1-B543-1362BCD7F448}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlacemarkFilter.infrastructure", "PlacemarkFilter.infrastructure\PlacemarkFilter.infrastructure.csproj", "{B6E52A4C-3110-45BE-B59B-DA7D6237493A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{CC03DA08-D7ED-441F-9A05-793FC3D4D8C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlacemarkFilter.API", "PlacemarkFilter.API\PlacemarkFilter.API.csproj", "{5846077C-1FA2-40A8-8A81-213ECA3C4294}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{877B4C14-31EC-4DAE-99EA-312F755B4D5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{877B4C14-31EC-4DAE-99EA-312F755B4D5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{877B4C14-31EC-4DAE-99EA-312F755B4D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{877B4C14-31EC-4DAE-99EA-312F755B4D5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87BEF7FC-8E60-4AA1-B543-1362BCD7F448}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87BEF7FC-8E60-4AA1-B543-1362BCD7F448}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87BEF7FC-8E60-4AA1-B543-1362BCD7F448}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87BEF7FC-8E60-4AA1-B543-1362BCD7F448}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6E52A4C-3110-45BE-B59B-DA7D6237493A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6E52A4C-3110-45BE-B59B-DA7D6237493A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6E52A4C-3110-45BE-B59B-DA7D6237493A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6E52A4C-3110-45BE-B59B-DA7D6237493A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5846077C-1FA2-40A8-8A81-213ECA3C4294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5846077C-1FA2-40A8-8A81-213ECA3C4294}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5846077C-1FA2-40A8-8A81-213ECA3C4294}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5846077C-1FA2-40A8-8A81-213ECA3C4294}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{877B4C14-31EC-4DAE-99EA-312F755B4D5B} = {5AC76D52-865B-4741-AF21-DCE0780C83CD}
+		{87BEF7FC-8E60-4AA1-B543-1362BCD7F448} = {4EA09DE0-47B8-466F-B7EC-55B293A993C4}
+		{B6E52A4C-3110-45BE-B59B-DA7D6237493A} = {7C814AF3-10AC-4187-A213-D673079F4EAE}
+		{5846077C-1FA2-40A8-8A81-213ECA3C4294} = {CC03DA08-D7ED-441F-9A05-793FC3D4D8C3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2F50259B-81C1-4A8D-A051-8716FCE92FC8}
