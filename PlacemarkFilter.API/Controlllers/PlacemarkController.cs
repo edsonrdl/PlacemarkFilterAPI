@@ -19,9 +19,7 @@ namespace PlacemarkFilter.API.Controllers
 
             string basePath = Directory.GetCurrentDirectory();
             string relativePath = configuration.GetValue<string>("KmlFilePath");
-
             _filePath = Path.Combine(basePath, relativePath);
-
 
             if (string.IsNullOrEmpty(_filePath) || !System.IO.File.Exists(_filePath))
             {
@@ -42,7 +40,6 @@ namespace PlacemarkFilter.API.Controllers
                     return NotFound("Nenhum placemark encontrado com os filtros fornecidos.");
                 }
 
-               
                 return Ok(filteredPlacemarks);
             }
             catch (ApplicationException ex)
@@ -94,9 +91,9 @@ namespace PlacemarkFilter.API.Controllers
             try
             {
                 var placemarks = _kmlService.LoadPlacemarks(_filePath);
-                var uniqueClients = placemarks.Select(p => p.Cliente).Distinct().ToList();
-                var uniqueSituations = placemarks.Select(p => p.Situacao).Distinct().ToList();
-                var uniqueNeighborhoods = placemarks.Select(p => p.Bairro).Distinct().ToList();
+                var uniqueClients = placemarks.Select(p => p.Cliente?.Trim().ToUpperInvariant()).Where(p => !string.IsNullOrEmpty(p)).Distinct().ToList();
+                var uniqueSituations = placemarks.Select(p => p.Situacao?.Trim().ToUpperInvariant()).Where(p => !string.IsNullOrEmpty(p)).Distinct().ToList();
+                var uniqueNeighborhoods = placemarks.Select(p => p.Bairro?.Trim().ToUpperInvariant()).Where(p => !string.IsNullOrEmpty(p)).Distinct().ToList();
 
                 return Ok(new
                 {
