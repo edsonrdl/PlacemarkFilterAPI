@@ -1,45 +1,29 @@
 ﻿using PlacemarkFilter.Domain.Entities;
 using PlacemarkFilter.Domain.Interfaces.UseCases;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
 
-namespace PlacemarkFilter.infrastructure.Persistence.Repositories
+namespace PlacemarkFilter.Infrastructure.Persistence.Repositories
 {
-    public class KmlRepository: IKmlRepository
+    public class KmlRepository : IKmlRepository
     {
         public List<Placemark> LoadPlacemarks(string filePath)
         {
             var placemarks = new List<Placemark>();
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(filePath);
 
-            try
+            // Obtém todos os nós "Placemark" no KML
+            var placemarkNodes = xmlDoc.GetElementsByTagName("Placemark");
+            foreach (XmlNode node in placemarkNodes)
             {
-                using var stream = File.OpenRead(filePath);
-                var parser = KmlFile.Load(stream);
-
-                if (parser.Root is Kml kml && kml.Feature is Document document)
+                var placemark = new Placemark
                 {
-                    foreach (var feature in document.Features)
-                    {
-                        if (feature is SharpKml.Dom.Placemark placemark)
-                        {
-                            var placemarkData = new Placemark
-                            {
-                                Cliente = placemark.Name,
-                                Situacao = placemark.Description?.Text
-                            };
-
-                            placemarks.Add(placemarkData);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Erro ao carregar o arquivo KML: {ex.Message}");
+                    Cliente = node["name"]?.InnerText,
+                    Situacao = node["description"]?.InnerText,
+                    Bairro = node["address"]?.InnerText // Adicione outros campos conforme necessário
+                };
+                placemarks.Add(placemark);
             }
 
             return placemarks;

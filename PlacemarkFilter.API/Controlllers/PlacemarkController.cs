@@ -1,22 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using PlacemarkFilter.Domain.Interfaces.Services;
-using System.Reflection.Metadata;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace PlacemarkFilter.API.Controlllers
+namespace PlacemarkFilter.API.Controllers
 {
     [ApiController]
     [Route("api/placemarks")]
     public class PlacemarkController : ControllerBase
     {
         private readonly IKmlService _kmlService;
-
         private readonly string _filePath;
 
         public PlacemarkController(IKmlService kmlService, IConfiguration configuration)
         {
             _kmlService = kmlService;
-            _filePath = configuration["KmlFilePath"];
+
+            // Obtém o caminho do arquivo KML a partir da configuração
+            _filePath = configuration.GetValue<string>("KmlFilePath");
+
+            // Verifica se o arquivo existe durante a inicialização
+            if (string.IsNullOrEmpty(_filePath) || !System.IO.File.Exists(_filePath))
+            {
+                throw new FileNotFoundException($"O arquivo KML especificado em 'KmlFilePath' não foi encontrado: {_filePath}");
+            }
         }
 
         [HttpPost("export")]
@@ -27,12 +35,26 @@ namespace PlacemarkFilter.API.Controlllers
                 var placemarks = _kmlService.LoadPlacemarks(_filePath);
                 var filteredPlacemarks = _kmlService.FilterPlacemarks(placemarks, filters);
 
-                // Lógica para exportar o novo KML
+                if (!filteredPlacemarks.Any())
+                {
+                    return NotFound("Nenhum placemark encontrado com os filtros fornecidos.");
+                }
+
+                // TODO: Lógica para exportar o novo KML (pode ser implementada conforme necessário)
+                // Exemplo de retorno de dados filtrados (substitua conforme necessário)
                 return Ok(filteredPlacemarks);
             }
             catch (ApplicationException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (FileNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (IOException ex)
+            {
+                return StatusCode(500, $"Erro de E/S ao acessar o arquivo: {ex.Message}");
             }
         }
 
@@ -43,11 +65,25 @@ namespace PlacemarkFilter.API.Controlllers
             {
                 var placemarks = _kmlService.LoadPlacemarks(_filePath);
                 var filteredPlacemarks = _kmlService.FilterPlacemarks(placemarks, filters);
+
+                if (!filteredPlacemarks.Any())
+                {
+                    return NotFound("Nenhum placemark encontrado com os filtros fornecidos.");
+                }
+
                 return Ok(filteredPlacemarks);
             }
             catch (ApplicationException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (FileNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (IOException ex)
+            {
+                return StatusCode(500, $"Erro de E/S ao acessar o arquivo: {ex.Message}");
             }
         }
 
@@ -71,6 +107,14 @@ namespace PlacemarkFilter.API.Controlllers
             catch (ApplicationException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (FileNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (IOException ex)
+            {
+                return StatusCode(500, $"Erro de E/S ao acessar o arquivo: {ex.Message}");
             }
         }
     }

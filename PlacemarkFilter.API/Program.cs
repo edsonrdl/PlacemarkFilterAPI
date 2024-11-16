@@ -5,7 +5,7 @@ using Microsoft.OpenApi.Models;
 using PlacemarkFilter.Application.Services;
 using PlacemarkFilter.Domain.Interfaces.Services;
 using PlacemarkFilter.Domain.Interfaces.UseCases;
-using PlacemarkFilter.infrastructure.Persistence.Repositories;
+using PlacemarkFilter.Infrastructure.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
