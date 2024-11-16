@@ -17,8 +17,12 @@ namespace PlacemarkFilter.API.Controllers
         {
             _kmlService = kmlService;
 
-            // Obtém o caminho do arquivo KML a partir da configuração
-            _filePath = configuration.GetValue<string>("KmlFilePath");
+            // Obtém o caminho base do diretório atual
+            string basePath = Directory.GetCurrentDirectory();
+            string relativePath = configuration.GetValue<string>("KmlFilePath");
+
+            // Combina o caminho base com o caminho relativo do arquivo
+            _filePath = Path.Combine(basePath, relativePath);
 
             // Verifica se o arquivo existe durante a inicialização
             if (string.IsNullOrEmpty(_filePath) || !System.IO.File.Exists(_filePath))
@@ -41,7 +45,6 @@ namespace PlacemarkFilter.API.Controllers
                 }
 
                 // TODO: Lógica para exportar o novo KML (pode ser implementada conforme necessário)
-                // Exemplo de retorno de dados filtrados (substitua conforme necessário)
                 return Ok(filteredPlacemarks);
             }
             catch (ApplicationException ex)
