@@ -3,6 +3,7 @@ using PlacemarkFilter.Domain.Interfaces.Services;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 
 namespace PlacemarkFilter.API.Controllers
 {
@@ -32,6 +33,7 @@ namespace PlacemarkFilter.API.Controllers
             try
             {
                 var placemarks = _kmlService.LoadPlacemarks(_filePath);
+
                 var filteredPlacemarks = _kmlService.FilterPlacemarks(placemarks, filters);
 
                 if (!filteredPlacemarks.Any())
@@ -62,6 +64,7 @@ namespace PlacemarkFilter.API.Controllers
             try
             {
                 var placemarks = _kmlService.LoadPlacemarks(_filePath);
+
                 var filteredPlacemarks = _kmlService.FilterPlacemarks(placemarks, filters);
 
                 if (!filteredPlacemarks.Any())

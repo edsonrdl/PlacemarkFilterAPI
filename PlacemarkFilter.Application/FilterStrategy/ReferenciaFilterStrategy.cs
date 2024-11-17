@@ -5,11 +5,14 @@ using System.Linq;
 
 namespace PlacemarkFilter.Application.FilterStrategy
 {
-    public class ClientFilterStrategy : IFilterStrategy
+    public class ReferenciaFilterStrategy : IFilterStrategy
     {
         public List<Placemark> ApplyFilter(List<Placemark> placemarks, string filterValue)
         {
-            return placemarks.Where(p => p.Cliente == filterValue).ToList();
+            if (filterValue.Length < 3)
+                return placemarks;
+
+            return placemarks.Where(p => p.Referencia?.Contains(filterValue) == true).ToList();
         }
     }
 }

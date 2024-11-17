@@ -1,32 +1,51 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+
 using Microsoft.OpenApi.Models;
 using PlacemarkFilter.Application.Services;
+using PlacemarkFilter.Application.FilterStrategy;
 using PlacemarkFilter.Domain.Interfaces.Services;
 using PlacemarkFilter.Domain.Interfaces.UseCases;
 using PlacemarkFilter.Infrastructure.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adiciona serviços ao container
+
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// Configuração do Swagger para documentação da API
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "PlacemarkFilter API", Version = "v1" });
 });
 
-// Injeção de dependências
-builder.Services.AddScoped<IKmlService, KmlService>();
+
 builder.Services.AddScoped<IKmlRepository, KmlRepository>();
+
+
+builder.Services.AddSingleton<Dictionary<string, IFilterStrategy>>(provider =>
+{
+    return new Dictionary<string, IFilterStrategy>
+    {
+        { "CLIENTE", new ClientFilterStrategy() },
+        { "SITUACAO", new SituationFilterStrategy() },
+        { "BAIRRO", new BairroFilterStrategy() },
+        { "REFERENCIA", new ReferenciaFilterStrategy() },
+        { "RUA/CRUZAMENTO", new RuaCruzamentoFilterStrategy() }
+    };
+});
+
+
+builder.Services.AddScoped<IKmlService>(provider =>
+{
+    var kmlRepository = provider.GetRequiredService<IKmlRepository>();
+    var filterStrategies = provider.GetRequiredService<Dictionary<string, IFilterStrategy>>();
+    return new KmlService(kmlRepository, filterStrategies);
+});
 
 var app = builder.Build();
 
-// Configura o pipeline de requisição HTTP
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

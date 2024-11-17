@@ -10,10 +10,12 @@ namespace PlacemarkFilter.Application.Services
     public class KmlService : IKmlService
     {
         private readonly IKmlRepository _kmlRepository;
+        private readonly Dictionary<string, IFilterStrategy> _filterStrategies;
 
-        public KmlService(IKmlRepository kmlRepository)
+        public KmlService(IKmlRepository kmlRepository, Dictionary<string, IFilterStrategy> filterStrategies)
         {
             _kmlRepository = kmlRepository;
+            _filterStrategies = filterStrategies;
         }
 
         public List<Placemark> LoadPlacemarks(string filePath)
@@ -30,25 +32,14 @@ namespace PlacemarkFilter.Application.Services
 
             foreach (var filter in filters)
             {
-                switch (filter.Key.ToUpperInvariant())
+
+                if (_filterStrategies.TryGetValue(filter.Key.ToUpperInvariant(), out var strategy))
                 {
-                    case "CLIENTE":
-                        placemarks = placemarks.Where(p => p.Cliente == filter.Value).ToList();
-                        break;
-                    case "SITUACAO":
-                        placemarks = placemarks.Where(p => p.Situacao == filter.Value).ToList();
-                        break;
-                    case "BAIRRO":
-                        placemarks = placemarks.Where(p => p.Bairro == filter.Value).ToList();
-                        break;
-                    case "REFERENCIA":
-                        if (filter.Value.Length >= 3)
-                            placemarks = placemarks.Where(p => p.Referencia?.Contains(filter.Value) == true).ToList();
-                        break;
-                    case "RUA/CRUZAMENTO":
-                        if (filter.Value.Length >= 3)
-                            placemarks = placemarks.Where(p => p.RuaCruzamento?.Contains(filter.Value) == true).ToList();
-                        break;
+                    placemarks = strategy.ApplyFilter(placemarks, filter.Value);
+                }
+                else
+                {
+                    throw new ApplicationException($"Filtro não reconhecido: {filter.Key}");
                 }
             }
 
@@ -57,7 +48,6 @@ namespace PlacemarkFilter.Application.Services
 
         public byte[] ExportFilteredPlacemarks(List<Placemark> placemarks)
         {
-
             StringBuilder kmlContent = new StringBuilder();
             kmlContent.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             kmlContent.AppendLine("<kml xmlns=\"http://www.opengis.net/kml/2.2\">");

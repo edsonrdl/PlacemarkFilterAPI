@@ -1,20 +1,15 @@
 ﻿using PlacemarkFilter.Domain.Entities;
 using PlacemarkFilter.Domain.Interfaces.Services;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PlacemarkFilter.Application.FilterStrategy
 {
-    public class FilterContext
+    public class SituationFilterStrategy : IFilterStrategy
     {
-        private readonly IFilterStrategy _strategy;
-
-        public FilterContext(IFilterStrategy strategy)
-        {
-            _strategy = strategy;
-        }
-
         public List<Placemark> ApplyFilter(List<Placemark> placemarks, string filterValue)
         {
-            return _strategy.ApplyFilter(placemarks, filterValue);
+            return placemarks.Where(p => p.Situacao == filterValue).ToList();
         }
     }
 }
