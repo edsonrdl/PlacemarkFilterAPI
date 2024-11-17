@@ -7,6 +7,6 @@ namespace PlacemarkFilter.Domain.Interfaces.Services
     {
         List<Placemark> LoadPlacemarks(string filePath);
         List<Placemark> FilterPlacemarks(List<Placemark> placemarks, Dictionary<string, string> filters);
-        byte[] ExportFilteredPlacemarks(List<Placemark> placemarks); // Certifique-se que este método está corretamente declarado.
+        byte[] ExportFilteredPlacemarks(List<Placemark> placemarks); 
     }
 }

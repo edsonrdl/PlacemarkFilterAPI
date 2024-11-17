@@ -57,7 +57,7 @@ namespace PlacemarkFilter.Application.Services
 
         public byte[] ExportFilteredPlacemarks(List<Placemark> placemarks)
         {
-            // Implementação básica de geração de conteúdo KML.
+
             StringBuilder kmlContent = new StringBuilder();
             kmlContent.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             kmlContent.AppendLine("<kml xmlns=\"http://www.opengis.net/kml/2.2\">");
@@ -68,7 +68,6 @@ namespace PlacemarkFilter.Application.Services
                 kmlContent.AppendLine("<Placemark>");
                 kmlContent.AppendLine($"<name>{placemark.Cliente}</name>");
                 kmlContent.AppendLine($"<description>{placemark.Situacao}</description>");
-                // Adicione outros elementos conforme necessário
                 kmlContent.AppendLine("</Placemark>");
             }
 
