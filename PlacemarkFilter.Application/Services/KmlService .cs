@@ -3,6 +3,7 @@ using PlacemarkFilter.Domain.Interfaces.Services;
 using PlacemarkFilter.Domain.Interfaces.UseCases;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace PlacemarkFilter.Application.Services
 {
@@ -52,6 +53,29 @@ namespace PlacemarkFilter.Application.Services
             }
 
             return placemarks;
+        }
+
+        public byte[] ExportFilteredPlacemarks(List<Placemark> placemarks)
+        {
+            // Implementação básica de geração de conteúdo KML.
+            StringBuilder kmlContent = new StringBuilder();
+            kmlContent.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            kmlContent.AppendLine("<kml xmlns=\"http://www.opengis.net/kml/2.2\">");
+            kmlContent.AppendLine("<Document>");
+
+            foreach (var placemark in placemarks)
+            {
+                kmlContent.AppendLine("<Placemark>");
+                kmlContent.AppendLine($"<name>{placemark.Cliente}</name>");
+                kmlContent.AppendLine($"<description>{placemark.Situacao}</description>");
+                // Adicione outros elementos conforme necessário
+                kmlContent.AppendLine("</Placemark>");
+            }
+
+            kmlContent.AppendLine("</Document>");
+            kmlContent.AppendLine("</kml>");
+
+            return Encoding.UTF8.GetBytes(kmlContent.ToString());
         }
     }
 }

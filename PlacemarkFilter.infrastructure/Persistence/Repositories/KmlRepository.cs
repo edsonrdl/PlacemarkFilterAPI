@@ -18,7 +18,6 @@ namespace PlacemarkFilter.Infrastructure.Persistence.Repositories
             var placemarkNodes = xmlDoc.GetElementsByTagName("Placemark");
             foreach (XmlNode node in placemarkNodes)
             {
-                // Usando expressões regulares para extrair valores de InnerText
                 string nodeText = node.InnerText;
 
                 string cliente = ExtractValue(nodeText, @"CLIENTE:\s*(.*?)\s*<br>");
@@ -37,12 +36,12 @@ namespace PlacemarkFilter.Infrastructure.Persistence.Repositories
                     .Build();
 
                 placemarks.Add(placemark);
+                Console.WriteLine(placemark);
             }
 
             return placemarks;
         }
 
-        // Método para extrair valores usando regex
         private string ExtractValue(string input, string pattern)
         {
             var match = Regex.Match(input, pattern);

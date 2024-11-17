@@ -16,7 +16,6 @@ namespace PlacemarkFilter.API.Controllers
         public PlacemarkController(IKmlService kmlService, IConfiguration configuration)
         {
             _kmlService = kmlService;
-
             string basePath = Directory.GetCurrentDirectory();
             string relativePath = configuration.GetValue<string>("KmlFilePath");
             _filePath = Path.Combine(basePath, relativePath);
@@ -40,7 +39,8 @@ namespace PlacemarkFilter.API.Controllers
                     return NotFound("Nenhum placemark encontrado com os filtros fornecidos.");
                 }
 
-                return Ok(filteredPlacemarks);
+                var exportedKml = _kmlService.ExportFilteredPlacemarks(filteredPlacemarks);
+                return File(exportedKml, "application/vnd.google-earth.kml+xml", "filteredPlacemarks.kml");
             }
             catch (ApplicationException ex)
             {
